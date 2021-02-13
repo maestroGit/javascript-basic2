@@ -1,9 +1,8 @@
 // Nivell 1
 // Exercici 1
 /* 
-objectes Empleados i Salarios, creu una arrow function getEmpleado
-que retorni una Promise efectuant la cerca en l'objecte 
-pel seu id. Creu una altra arrow function getSalario que rebi
+Crea una arrow function getEmpleado que retorni una Promise efectuant la cerca 
+en l'objecte employees pel seu id. Crea una altra arrow function getSalario que rebi
 com a paràmetre un objecte emprat i retorni el seu salari.
 */
 let employees = [
@@ -36,45 +35,42 @@ let salaries = [
   },
 ];
 
-const getEmpleados = (id) => {
+const getEmployees = (id) => {
   return new Promise((resolve, reject) => {
-    resolve(employees);
+    let searchEmployee = employees.find((item) => item.id === id);
+    //simlar tiempo asyncronía, como una petición fetch por ejemplo...
+    setTimeout(() => {
+      resolve(searchEmployee);
+    }, 1000);
   });
 };
-getEmpleados(2).then((data) => {
-  data.forEach((element) => console.log(element));
-  //console.log(data)
-});
 
-// Exercici 2
-/*
-Creu una funció asíncrona que, rebent un id d'empleat, 
-imprimeixi per pantalla el nom de l'empleat i el seu salari
-*/
-const getSalario = (id) => {
-  return new Promise((resolve, reject) => {
-    resolve(salaries);
+getEmployees(3)
+  .then((resolved) => {
+    //console.log(resolved);
+    return new Promise((resolve, reject) => {
+      resolve(resolved);
+    });
+  })
+  .then((resolved) => {
+    let id = resolved.id;
+    let searchSalario = salaries.find((item) => item.id === id);
+    console.log(searchSalario.salary);
+  })
+
+  .catch((err) => {
+    console.log(err.message);
   });
-};
-getSalario(2).then((data) => {
-  data.forEach((element) => console.log(element));
-});
 
-async function showName(id) {
-  const nombres = await getEmpleados();
-  const salarios = await getSalario();
-  for (let item of nombres) {
-    if (item.id === id) {
-      //console.log(" Y el nombre del id: " + id + " es: " + item.name);
-      const salarioId = item.name;
-      for (let item of salarios) {
-        if (item.id === id) {
-          console.log("El salario del id nº: " + id + " es: " + item.salary+".Y su nombre es: "+ salarioId);
-          const nombreId = item.salary;
-        }
-      }
-    }
-  }
+//- Exercici 2
+// Crea una funció asíncrona que, rebent un id d'empleat,
+// imprimeixi per pantalla el nom de l'empleat i el seu salari
+
+async function fetchingData(id) {
+  const employeesFetched = await getEmployees(id);
+  //console.log(employeesFetched,'async');
+  let idd = employeesFetched.id;
+  let searchSalario = salaries.find((item) => item.id === idd);
+  console.log(employeesFetched.name, searchSalario.salary);
 }
-
-showName(3);
+fetchingData(3);
