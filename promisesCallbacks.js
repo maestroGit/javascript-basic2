@@ -5,29 +5,18 @@ Crear una function que retorni una Promise que invoqui
  la funcion resolve() o bé reject() que rep.
  Invocar-la des de fora pasandole totes dues funcions que imprimeixin un missatge diferent en cada cas.
  */
-function retornPromise(param) {
-  if (typeof param !== "number") {
-    return Promise.reject("error");
-  }
-  /* do something that takes time, and then call resolve/reject (callbacks) */
-  return new Promise(function (resolve) {
-    resolve("retornPromise recibida");
-  });
-}
-retornPromise(5)
-  .then((x) => console.log(x))
-  .catch(() => console.log("error en retornPromise"));
+const promise = new Promise((resolve, reject) => {
+  return 5 > 6 ? resolve("Ok all rigth") : reject("Something is wrong");
+});
 
-const promesa = Promise.resolve(2);
-console.log(promesa);
-promesa
-  .then((item) => item + 2)
-  .then((item) => Promise.resolve(item + " promesa resuelta"))
-  .then((item) => Promise.reject("error en promesa "))
-  .then((item) =>
-    console.log("Este then no se llama por porque reject llama a catch ")
-  )
-  .catch((e) => console.log(e));
+promise.then(
+  (resolved) => {
+    console.log(resolved);
+  },
+  (error) => {
+    console.log(error);
+  }
+);
 
 /*
 //Exercici 2
@@ -35,26 +24,26 @@ Crear una arrow function que, rebent un paràmetre
 i una function callback, li passi a la funció un missatge o 
 un altre (que s'imprimirà per consola) en funció del paràmetre.
 */
-const callbackk = function callbackk (parm) {
+
+const devuelMensaje = (num, callback) => {
+  callback(num);
+};
+
+const esNum = (parm) => {
   if (typeof parm !== "number") {
-    console.log(parm);
-    console.log(parm+" this is Not a number");
+    console.log(parm, " this is Not a number");
   } else {
-    return;
+    console.log(parm, " OK, it is a number");
   }
 };
 
-const devueleMensaje = (parm, callback) => {
-  return callback(parm);
-};
-
-devueleMensaje('vvv',callbackk);
+devuelMensaje(5, esNum);
 
 /*
 Nivell 2
 - Exercici 1
-Donats els objectes emprats i salaris, 
-creu una arrow function getEmpleado que retorni una Promise 
+Donats els objectes employees i salaries, 
+crea una arrow function getEmpleado que retorni una Promise 
 efectuant la cerca en l'objecte pel seu id.
 */
 let employees = [
@@ -87,12 +76,42 @@ let salaries = [
   },
 ];
 
+const getEmpleados = (id) => {
+  return new Promise((resolve, reject) => {
+    let searchEmployee = employees.find((item) => item.id === id);
+    if (!searchEmployee) {
+      reject(`El empleado con id ${id} no existe`);
+    } else {
+      resolve(searchEmployee.name);
+    }
+  });
+};
+
+getEmpleados(2).then((data) => {
+  console.log(`El empleado es: `, data);
+});
+
 /*
 - Exercici 2
 Creu una altra arrow function getSalario que rebi com a paràmetre 
 un objecte emprat i retorni el seu salari.
+*/
+const getSalario = (id) => {
+  return new Promise((resolve, reject) => {
+    let data = salaries.find((ite) => ite.id === id);
+    if (!data) {
+      reject(`El id ${id} no existe`);
+    } else {
+      resolve(data);
+    }
+  });
+};
 
+getSalario(2).then((data) => {
+  console.log(`salario del ${data.id} `, `es `, data.salary);
+});
 
+/*
 - Exercici 3
 Invoqui la primera Promise getEmpleado i posteriorment getSalario, 
 niant l'execució de les dues promises.
