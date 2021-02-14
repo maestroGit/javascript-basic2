@@ -45,7 +45,7 @@ const getEmployees = (id) => {
   });
 };
 
-getEmployees(3)
+getEmployees(1)
   .then((resolved) => {
     //console.log(resolved);
     return new Promise((resolve, reject) => {

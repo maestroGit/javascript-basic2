@@ -31,9 +31,9 @@ const devuelMensaje = (num, callback) => {
 
 const esNum = (parm) => {
   if (typeof parm !== "number") {
-    console.log(parm, " this is Not a number");
+    console.log(parm, " This is Not a number");
   } else {
-    console.log(parm, " OK, it is a number");
+    console.log(parm, " OK, this is a number");
   }
 };
 
@@ -82,37 +82,68 @@ const getEmpleados = (id) => {
     if (!searchEmployee) {
       reject(`El empleado con id ${id} no existe`);
     } else {
-      resolve(searchEmployee.name);
+      resolve(searchEmployee);
     }
   });
 };
 
 getEmpleados(2).then((data) => {
-  console.log(`El empleado es: `, data);
+  console.log(('Exercici-1 ->'), data);
 });
-
 /*
 - Exercici 2
-Creu una altra arrow function getSalario que rebi com a paràmetre 
+Crea una altra arrow function getSalario que rebi com a paràmetre 
 un objecte emprat i retorni el seu salari.
 */
-const getSalario = (id) => {
+const getSalary = (obje) => {
+  const id = obje.id;
   return new Promise((resolve, reject) => {
-    let data = salaries.find((ite) => ite.id === id);
-    if (!data) {
-      reject(`El id ${id} no existe`);
-    } else {
-      resolve(data);
-    }
+    let searchSalary = salaries.find((item) => item.id === id);
+    //simlar tiempo asyncronía, como una petición fetch por ejemplo...
+    setTimeout(() => {
+      resolve(searchSalary);
+    }, 500);
   });
 };
 
-getSalario(2).then((data) => {
-  console.log(`salario del ${data.id} `, `es `, data.salary);
-});
-
+getSalary({id:3})
+  .then((resolved) => {
+    console.log(('Exercici-2 ->'), resolved);
+  })
 /*
 - Exercici 3
 Invoqui la primera Promise getEmpleado i posteriorment getSalario, 
 niant l'execució de les dues promises.
 */
+const promisesAnidadas = (id) => {
+  return new Promise((resolve, reject) => {
+    let searchEmployee = employees.find((item) => item.id === id);
+    //simlar tiempo asyncronía, como una petición fetch por ejemplo...
+    setTimeout(() => {
+      resolve(searchEmployee);
+    }, 500);
+  });
+};
+
+promisesAnidadas(2)
+.then((resolved) => {
+  return new Promise((resolve, reject) => {
+    resolve(resolved);
+  });
+})
+.then((resolved) => {
+  let id = resolved.id;
+  let searchSalario = salaries.find((item) => item.id === id);
+  console.log(('Exercici-3 ->'), searchSalario.salary);
+})
+
+//Nivell 3
+//- Exercici 1
+//Fixi un element catch a la invocació de la fase anterior que capturi qualsevol error i l'imprimeixi per consola.
+  .catch((err) => {
+    console.log(err.message);
+  });
+ 
+  
+  
+ 
